@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProyectoEmpresa.Views.Ventana2"
+             >
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#608EB4" Offset="4" />
+            <GradientStop Color="#17183B" Offset="0.5" />
+            <GradientStop Color="#1B3864" Offset="5.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+    <ScrollView>
+        <VerticalStackLayout>
+            <!-- Barra horizontal opciones rápidas -->
+            <Grid HorizontalOptions="End" ColumnDefinitions="*,*,*" VerticalOptions="Start">
+                <Button
+                    Grid.Column="0"
+                    HeightRequest="50"
+                    WidthRequest="60"
+                    ImageSource="volver.png"
+                    Clicked="OnBackButtonClicked">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                    </Button.GestureRecognizers>
+                </Button>
+
+                <Button 
+                    Margin="10"
+                    Grid.Column="1"
+                    ImageSource="home.png" 
+                    HorizontalOptions="End"
+                    CornerRadius="15"
+                    HeightRequest="50"
+                    WidthRequest="60"
+                    Clicked="OnIrAMainPageClicked">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                    </Button.GestureRecognizers>
+                </Button>
+            </Grid>
+
+            <!-- Barra horizontal ventanas -->
+            <Grid ColumnDefinitions="*,*,*" HorizontalOptions="Center">
+                <Button
+                    BorderWidth="5"
+                    TextTransform="Uppercase"
+                    Margin="10"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="Inventario Disponible"
+                    Clicked="OnIrAVentana1Clicked">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                    </Button.GestureRecognizers>
+                </Button>
+
+                <!-- Boton 2 -->
+                <Button
+                    BorderWidth="20"
+                    TextTransform="Uppercase"
+                    Margin="10"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Text="Registro de Venta"
+                    BackgroundColor="#261946"
+                    Clicked="OnIrAVentana2Clicked">
+                </Button>
+
+                <Button
+                    BorderWidth="5" 
+                    TextTransform="Uppercase"
+                    Margin="10"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Text="Historial Diario"
+                    Clicked="OnIrAVentana3Clicked">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                    </Button.GestureRecognizers>
+                </Button>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
