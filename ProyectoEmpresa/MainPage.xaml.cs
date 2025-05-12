@@ -32,5 +32,20 @@
         {
             await Navigation.PushAsync(new MainPage());
         }
+        private void OnPointerEnteredGeneral(object sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.BackgroundColor = Color.FromArgb("#261946");
+            }
+        }
+
+        private void OnPointerExitedGeneral(object sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.BackgroundColor = Color.FromArgb("#352A5F");
+            }
+        }
     }
 }

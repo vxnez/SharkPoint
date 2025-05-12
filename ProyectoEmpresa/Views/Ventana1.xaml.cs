@@ -18,14 +18,27 @@ namespace ProyectoEmpresa.Views
             _dbConnection = new SQLiteConnection(dbPath);
 
             EditarGuardarButton = this.FindByName<Button>("EditarGuardarButton");
+            Productos.ItemSelected += OnProductoSeleccionado; // Suscribir al evento ItemSelected
+        }
+
+        private Productos? _productoSeleccionadoParaEliminar;
+
+        private void OnProductoSeleccionado(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem != null)
+            {
+                _productoSeleccionadoParaEliminar = e.SelectedItem as Productos;
+            }
+            else
+            {
+                _productoSeleccionadoParaEliminar = null;
+            }
         }
 
         public List<Productos> ObtenerTodosLosDatos()
         {
             return _dbConnection.Table<Productos>().ToList();
         }
-
-
 
         // Botón para volver a la página principal
         private void OnIrAMainPageClicked(object sender, EventArgs e)
@@ -38,9 +51,6 @@ namespace ProyectoEmpresa.Views
         {
             await Navigation.PopAsync(animated: false);
         }
-
-
-
 
         // Botón para ventana1
         private async void OnIrAVentana1Clicked(object sender, EventArgs e)
@@ -60,9 +70,6 @@ namespace ProyectoEmpresa.Views
             await Navigation.PushAsync(new Ventana3(), animated: false);
         }
 
-
-
-
         // Botón Guardar Producto
         private void OnGuardarProductoClicked(object sender, EventArgs e)
         {
@@ -79,13 +86,12 @@ namespace ProyectoEmpresa.Views
             }
 
             var productoExistente = _dbConnection.Table<Productos>().FirstOrDefault(p => p.Nombre == NombreEntry.Text);
-            if (productoExistente != null)
+            if (productoExistente != null && !_enModoEdicion)
             {
                 DisplayAlert("Error", "Ya existe un producto con este nombre. Por favor, elige un nombre diferente.", "OK");
                 return;
             }
 
-            // Reemplazar las asignaciones de propiedades de tipo decimal con conversiones explícitas
             var nuevoProducto = new Productos
             {
                 Nombre = NombreEntry.Text,
@@ -97,7 +103,27 @@ namespace ProyectoEmpresa.Views
                 Proveedor = ProveedorEntry.Text
             };
 
-            _dbConnection.Insert(nuevoProducto);
+            if (_enModoEdicion && _productoEnEdicion != null)
+            {
+                _productoEnEdicion.Nombre = nuevoProducto.Nombre;
+                _productoEnEdicion.Descripcion = nuevoProducto.Descripcion;
+                _productoEnEdicion.Categoria = nuevoProducto.Categoria;
+                _productoEnEdicion.PrecioDeCompra = nuevoProducto.PrecioDeCompra;
+                _productoEnEdicion.PrecioDeVenta = nuevoProducto.PrecioDeVenta;
+                _productoEnEdicion.Stock = nuevoProducto.Stock;
+                _productoEnEdicion.Proveedor = nuevoProducto.Proveedor;
+
+                _dbConnection.Update(_productoEnEdicion);
+                DisplayAlert("Guardar Producto", "Producto actualizado correctamente.", "OK");
+                _enModoEdicion = false;
+                _productoEnEdicion = null;
+                EditarGuardarButton.Text = "Editar";
+            }
+            else
+            {
+                _dbConnection.Insert(nuevoProducto);
+                DisplayAlert("Guardar Producto", "Producto guardado correctamente.", "OK");
+            }
 
             var productos = _dbConnection.Table<Productos>().ToList();
             Productos.ItemsSource = productos;
@@ -109,8 +135,6 @@ namespace ProyectoEmpresa.Views
             PrecioVentaEntry.Text = string.Empty;
             StockEntry.Text = string.Empty;
             ProveedorEntry.Text = string.Empty;
-
-            DisplayAlert("Guardar Producto", "Producto guardado correctamente.", "OK");
         }
 
         // Mostrar productos guardados
@@ -132,13 +156,13 @@ namespace ProyectoEmpresa.Views
             _productosVisibles = !_productosVisibles;
         }
 
-        // Eliminar productos seleccionados
+        // Eliminar todos los productos
         private async void OnEliminarProductoClicked(object sender, EventArgs e)
         {
             bool confirmacion = await DisplayAlert("Confirmar Eliminación",
-                                                   "¿Estás seguro de que deseas eliminar TODOS los productos de la base de datos?",
-                                                   "Sí",
-                                                   "No");
+                                                    "¿Estás seguro de que deseas eliminar TODOS los productos de la base de datos?",
+                                                    "Sí",
+                                                    "No");
 
             if (!confirmacion)
             {
@@ -156,6 +180,38 @@ namespace ProyectoEmpresa.Views
             catch (Exception ex)
             {
                 await DisplayAlert("Error", $"Ocurrió un error al eliminar la base de datos: {ex.Message}", "OK");
+            }
+        }
+
+        // Botón para eliminar un único producto
+        private async void OnEliminarUnicoProductoClicked(object sender, EventArgs e)
+        {
+            if (_productoSeleccionadoParaEliminar == null)
+            {
+                await DisplayAlert("Error", "Por favor, selecciona un producto de la lista para eliminar.", "OK");
+                return;
+            }
+
+            bool confirmacion = await DisplayAlert("Confirmar Eliminación",
+                                                    $"¿Estás seguro de que deseas eliminar el producto: {_productoSeleccionadoParaEliminar.Nombre}?",
+                                                    "Sí",
+                                                    "No");
+
+            if (confirmacion)
+            {
+                try
+                {
+                    _dbConnection.Delete(_productoSeleccionadoParaEliminar);
+                    var productos = ObtenerTodosLosDatos();
+                    Productos.ItemsSource = productos;
+                    _productoSeleccionadoParaEliminar = null; // Deseleccionar el producto
+
+                    await DisplayAlert("Producto Eliminado", "El producto ha sido eliminado correctamente.", "OK");
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("Error", $"Ocurrió un error al eliminar el producto: {ex.Message}", "OK");
+                }
             }
         }
 
@@ -231,10 +287,24 @@ namespace ProyectoEmpresa.Views
             }
         }
 
+        // Colores para el botón de ELIMINAR (ÚNICO)
+        private void OnPointerEnteredEliminarUnico(object sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.BackgroundColor = Colors.DarkRed;
+            }
+        }
 
+        private void OnPointerExitedEliminarUnico(object sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.BackgroundColor = Color.FromArgb("#352A5F");
+            }
+        }
 
-
-        // Colores para el botón de ELIMINAR
+        // Colores para el botón de ELIMINAR (TODOS)
         private void OnPointerEnteredEliminar(object sender, EventArgs e)
         {
             if (sender is Button button)
@@ -284,6 +354,5 @@ namespace ProyectoEmpresa.Views
                 button.BackgroundColor = Color.FromArgb("#352A5F");
             }
         }
-
     }
 }

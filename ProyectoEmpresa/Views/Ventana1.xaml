@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProyectoEmpresa.Views.Ventana1">
-    
+
     <ContentPage.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="#608EB4" Offset="4" />
@@ -13,40 +13,54 @@
     <ScrollView>
 
         <VerticalStackLayout>
-            <!-- Barra horizontal opciones rapidas -->
-            <Grid HorizontalOptions="End" ColumnDefinitions="*,*,*" VerticalOptions="Start" >
-                <Button
-                    Grid.Column="0"
-                    HeightRequest="50"
-                    WidthRequest="60"
-                    ImageSource="volver.png"
-                    Clicked="OnBackButtonClicked">
-                    
-                    <Button.GestureRecognizers>
-                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
-                    </Button.GestureRecognizers>
-                    
-                </Button>
+            
+            <Grid ColumnDefinitions="*,*">
+                
+                <Grid Grid.Column="0" HorizontalOptions="Start">
+                        <Image 
+                        Grid.Column="1"
+                        Source="text.png" 
+                        Aspect="Center"
+                        VerticalOptions="Center" Margin="20"/>
+                </Grid>
 
-                <Button 
-                    Margin="10"
-                    Grid.Column="1"
-                    ImageSource="home.png" 
-                    HorizontalOptions="End"
-                    CornerRadius="15"
-                    HeightRequest="50"
-                    WidthRequest="60"
-                    Clicked="OnIrAMainPageClicked">
-                    
-                    <Button.GestureRecognizers>
-                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
-                    </Button.GestureRecognizers>
-                    
-                </Button>
 
+                <Grid HorizontalOptions="End" Grid.Column="1" ColumnDefinitions="*,*,*" VerticalOptions="End" >
+
+                    <Button
+                        HorizontalOptions="End"
+                        Grid.Column="0"
+                        HeightRequest="50"
+                        WidthRequest="60"
+                        ImageSource="volver.png"
+                        Clicked="OnBackButtonClicked">
+
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                        </Button.GestureRecognizers>
+
+                    </Button>
+
+                    <Button 
+                        Margin="10"
+                        Grid.Column="1"
+                        ImageSource="home.png" 
+                        HorizontalOptions="End"
+                        CornerRadius="15"
+                        HeightRequest="50"
+                        WidthRequest="60"
+                        Clicked="OnIrAMainPageClicked">
+
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                        </Button.GestureRecognizers>
+
+                    </Button>
+
+                </Grid>
             </Grid>
 
-            <!-- Barra horizontal ventanas -->
+
             <Grid ColumnDefinitions="*,*,*" HorizontalOptions="Center">
                 <Button
                     BorderWidth="20"
@@ -86,7 +100,6 @@
 
             </Grid>
 
-            <!-- Lista de productos -->
             <ListView x:Name="Productos" ItemsSource="{Binding Productos}" IsVisible="False" Margin="10">
                 <ListView.Header>
                     <Grid ColumnDefinitions="*,*,*,*,*,*,*,*">
@@ -118,7 +131,6 @@
                 </ListView.ItemTemplate>
             </ListView>
             <Grid ColumnDefinitions="*,*,*,*,*,*,*,*" RowDefinitions="*,*,*,*,*,*,*,*,*" Margin="10">
-                <!-- Formulario para ingresar datos -->
                 <Entry x:Name="NombreEntry" Placeholder="Nombre del producto" Grid.Row="7" Grid.Column="1"/>
                 <Entry x:Name="DescripcionEntry" Placeholder="Descripción" Grid.Row="7" Grid.Column="2"/>
                 <Entry x:Name="CategoriaEntry" Placeholder="Categoría" Grid.Row="7" Grid.Column="3"/>
@@ -152,8 +164,8 @@
 
                 <Button BorderWidth="30" 
                         HeightRequest="100" 
-                        WidthRequest="200"
-                        Text="Eliminar" 
+                        WidthRequest="220"
+                        Text="Eliminar Todo" 
                         Clicked="OnEliminarProductoClicked"
                         Grid.Row="8" 
                         Grid.Column="0">
@@ -172,6 +184,18 @@
                         Grid.Column="5">
                     <Button.GestureRecognizers>
                         <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                    </Button.GestureRecognizers>
+                </Button>
+
+                <Button BorderWidth="30" 
+                        HeightRequest="100" 
+                        WidthRequest="220"
+                        Text="Eliminar Uno " 
+                        Clicked="OnEliminarUnicoProductoClicked"
+                        Grid.Row="8" 
+                        Grid.Column="4">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredEliminarUnico" PointerExited="OnPointerExitedEliminarUnico" />
                     </Button.GestureRecognizers>
                 </Button>
             </Grid>

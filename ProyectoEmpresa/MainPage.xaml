@@ -12,22 +12,17 @@
     </ContentPage.Background>
 
     <ScrollView>
-        <VerticalStackLayout Margin="0">
-            <!-- Barra horizontal opciones rapidas -->
-            <Grid HorizontalOptions="End" ColumnDefinitions="*,*,*" >
-
-            </Grid>
-
-            <!-- Barra horizontal ventanas -->
-            <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*" HorizontalOptions="Center">
-                <Image 
+        <VerticalStackLayout Margin="200">
+            <Image 
                     Source="logo.png" 
                     Grid.Column="1" 
                     Grid.Row="0" 
-                    Aspect="AspectFit"
-                    WidthRequest="400"
-                    HeightRequest="200"
+                    Aspect="Center"
+                    Scale="1"
                     />
+            
+            <!-- Barra horizontal ventanas -->
+            <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*" HorizontalOptions="Center" Margin="10">
 
                 <Button
                     Margin="10"
@@ -37,7 +32,11 @@
                     HeightRequest="NaN"
                     Opacity="10"
                     Text="Inventario&#x0a;Disponible"
-                    Clicked="OnIrAVentana1Clicked"/>
+                    Clicked="OnIrAVentana1Clicked">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                    </Button.GestureRecognizers>
+                </Button>
 
                 <Button
                     Margin="10"
@@ -46,7 +45,11 @@
                     WidthRequest="250"
                     HeightRequest="NaN"
                     Text="Registro de Venta"
-                    Clicked="OnIrAVentana2Clicked"/>
+                    Clicked="OnIrAVentana2Clicked">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                    </Button.GestureRecognizers>
+                </Button>
                 <Button
                     Margin="10"
                     Grid.Row="1"
@@ -54,7 +57,11 @@
                     WidthRequest="250"
                     HeightRequest="150"
                     Text="Historial Diario"
-                    Clicked="OnIrAVentana3Clicked"/>
+                    Clicked="OnIrAVentana3Clicked">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                    </Button.GestureRecognizers>
+                </Button>
             </Grid>
         </VerticalStackLayout>
     </ScrollView>

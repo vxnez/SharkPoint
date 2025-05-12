@@ -21,5 +21,6 @@ namespace ProyectoEmpresa.Views
         public int Stock { get; set; }
 
         public string Proveedor { get; set; } = string.Empty;
+        public decimal Subtotal { get; set; }
     }
 }

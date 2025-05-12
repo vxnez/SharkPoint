@@ -14,31 +14,50 @@
 
         <VerticalStackLayout>
             <!-- Barra horizontal opciones rápidas -->
-            <Grid HorizontalOptions="End" ColumnDefinitions="*,*,*" VerticalOptions="Start">
-                <Button
-                    Grid.Column="0"
-                    HeightRequest="50"
-                    WidthRequest="60"
-                    ImageSource="volver.png"
-                    Clicked="OnBackButtonClicked">
-                    <Button.GestureRecognizers>
-                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
-                    </Button.GestureRecognizers>
-                </Button>
+            <Grid ColumnDefinitions="*,*">
 
-                <Button 
-                    Margin="10"
-                    Grid.Column="1"
-                    ImageSource="home.png" 
-                    HorizontalOptions="End"
-                    CornerRadius="15"
-                    HeightRequest="50"
-                    WidthRequest="60"
-                    Clicked="OnIrAMainPageClicked">
-                    <Button.GestureRecognizers>
-                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
-                    </Button.GestureRecognizers>
-                </Button>
+                <Grid Grid.Column="0" HorizontalOptions="Start">
+                    <Image 
+                        Grid.Column="1"
+                        Source="text.png" 
+                        Aspect="Center"
+                        VerticalOptions="Center" Margin="20"/>
+                </Grid>
+
+
+                <Grid HorizontalOptions="End" Grid.Column="1" ColumnDefinitions="*,*,*" VerticalOptions="End" >
+
+                    <Button
+                        HorizontalOptions="End"
+                        Grid.Column="0"
+                        HeightRequest="50"
+                        WidthRequest="60"
+                        ImageSource="volver.png"
+                        Clicked="OnBackButtonClicked">
+
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                        </Button.GestureRecognizers>
+
+                    </Button>
+
+                    <Button 
+                        Margin="10"
+                        Grid.Column="1"
+                        ImageSource="home.png" 
+                        HorizontalOptions="End"
+                        CornerRadius="15"
+                        HeightRequest="50"
+                        WidthRequest="60"
+                        Clicked="OnIrAMainPageClicked">
+
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                        </Button.GestureRecognizers>
+
+                    </Button>
+
+                </Grid>
             </Grid>
 
             <!-- Barra horizontal ventanas -->
