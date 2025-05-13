@@ -7,7 +7,7 @@ namespace ProyectoEmpresa.Views
     {
         [PrimaryKey]
         public string Id { get; set; } = new Random().Next(1000, 10000).ToString();
-
+        [Unique]
         public string Nombre { get; set; } = string.Empty;
 
         public string Descripcion { get; set; } = string.Empty;

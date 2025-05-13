@@ -15,11 +15,15 @@
             <Grid ColumnDefinitions="*,*">
 
                 <Grid Grid.Column="0" HorizontalOptions="Start">
-                    <Image 
+                    <Button
                         Grid.Column="1"
-                        Source="text.png" 
-                        Aspect="Center"
-                        VerticalOptions="Center" Margin="20"/>
+                        ImageSource="text.png" 
+                        HorizontalOptions="Start"
+                        Clicked="OnIrAMainPageClicked"
+                        BackgroundColor="Transparent"
+                        VerticalOptions="Center" Margin="20">
+
+                    </Button>
                 </Grid>
 
 
@@ -67,7 +71,11 @@
                     Grid.Row="1"
                     Grid.Column="0"
                     Text="Inventario Disponible"
+                    BackgroundColor="#1C2855"
                     Clicked="OnIrAVentana1Clicked">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral1" />
+                    </Button.GestureRecognizers>
                 </Button>
 
                 <Button
@@ -76,12 +84,9 @@
                     Margin="10"
                     Grid.Row="1"
                     Grid.Column="1"
-                    BackgroundColor="#261946"
+                     BackgroundColor="#261946"
                     Text="Registro de Venta"
                     Clicked="OnIrAVentana2Clicked">
-                    <Button.GestureRecognizers>
-                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
-                    </Button.GestureRecognizers>
                 </Button>
                 <Button
                     BorderWidth="5" 
@@ -90,9 +95,10 @@
                     Grid.Row="1"
                     Grid.Column="2"
                     Text="Historial Diario"
+                    BackgroundColor="#3A5285"
                     Clicked="OnIrAVentana3Clicked">
                     <Button.GestureRecognizers>
-                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral3" />
                     </Button.GestureRecognizers>
                 </Button>
 

@@ -40,11 +40,25 @@
             }
         }
 
-        private void OnPointerExitedGeneral(object sender, EventArgs e)
+        private void OnPointerExitedGeneral1(object sender, EventArgs e)
         {
             if (sender is Button button)
             {
-                button.BackgroundColor = Color.FromArgb("#352A5F");
+                button.BackgroundColor = Color.FromArgb("#1C2855");
+            }
+        }
+        private void OnPointerExitedGeneral2(object sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.BackgroundColor = Color.FromArgb("#2B3D6D");
+            }
+        }
+        private void OnPointerExitedGeneral3(object sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.BackgroundColor = Color.FromArgb("#3A5285");
             }
         }
     }

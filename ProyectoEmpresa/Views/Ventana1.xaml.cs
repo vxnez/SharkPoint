@@ -1,5 +1,11 @@
 using SQLite;
 using System.Text.RegularExpressions;
+using Microsoft.Maui.Storage; // Para el selector de archivos
+using NPOI.SS.UserModel;      // Clases principales de NPOI
+using NPOI.XSSF.UserModel;     // Para archivos .xlsx
+using System.IO;
+using System.Linq; // Para usar Any() en la lista
+using System.Collections.Generic; // Asegúrate de tener esta using para Dictionary y IEnumerable
 
 namespace ProyectoEmpresa.Views
 {
@@ -9,6 +15,7 @@ namespace ProyectoEmpresa.Views
         private bool _productosVisibles = false;
         private bool _enModoEdicion = false;
         private Productos? _productoEnEdicion;
+        private Productos? _productoSeleccionadoParaEliminar;
 
         public Ventana1()
         {
@@ -18,10 +25,8 @@ namespace ProyectoEmpresa.Views
             _dbConnection = new SQLiteConnection(dbPath);
 
             EditarGuardarButton = this.FindByName<Button>("EditarGuardarButton");
-            Productos.ItemSelected += OnProductoSeleccionado; // Suscribir al evento ItemSelected
+            Productos.ItemSelected += OnProductoSeleccionado;
         }
-
-        private Productos? _productoSeleccionadoParaEliminar;
 
         private void OnProductoSeleccionado(object sender, SelectedItemChangedEventArgs e)
         {
@@ -38,6 +43,35 @@ namespace ProyectoEmpresa.Views
         public List<Productos> ObtenerTodosLosDatos()
         {
             return _dbConnection.Table<Productos>().ToList();
+        }
+
+        private string GetCellValueAsString(ICell cell)
+        {
+            if (cell != null)
+            {
+                return cell.ToString().Trim();
+            }
+            return string.Empty;
+        }
+
+        private decimal GetCellValueAsDecimal(ICell cell)
+        {
+            if (cell != null && cell.CellType == CellType.Numeric)
+            {
+                return (decimal)cell.NumericCellValue;
+            }
+            decimal.TryParse(GetCellValueAsString(cell), out decimal result);
+            return result;
+        }
+
+        private int GetCellValueAsInt(ICell cell)
+        {
+            if (cell != null && cell.CellType == CellType.Numeric)
+            {
+                return (int)cell.NumericCellValue;
+            }
+            int.TryParse(GetCellValueAsString(cell), out int result);
+            return result;
         }
 
         // Botón para volver a la página principal
@@ -85,12 +119,12 @@ namespace ProyectoEmpresa.Views
                 return;
             }
 
-            var productoExistente = _dbConnection.Table<Productos>().FirstOrDefault(p => p.Nombre == NombreEntry.Text);
-            if (productoExistente != null && !_enModoEdicion)
-            {
-                DisplayAlert("Error", "Ya existe un producto con este nombre. Por favor, elige un nombre diferente.", "OK");
-                return;
-            }
+                var productoExistente = _dbConnection.Table<Productos>().FirstOrDefault(p => p.Nombre == NombreEntry.Text);
+                if (productoExistente != null && !_enModoEdicion)
+                    {
+                        DisplayAlert("Error", "Ya existe un producto con este nombre. Por favor, elige un nombre diferente.", "OK");
+                        return;
+                    }
 
             var nuevoProducto = new Productos
             {
@@ -255,7 +289,8 @@ namespace ProyectoEmpresa.Views
                     _productoEnEdicion.Nombre = NombreEntry.Text;
                     _productoEnEdicion.Descripcion = DescripcionEntry.Text;
                     _productoEnEdicion.Categoria = CategoriaEntry.Text;
-                    _productoEnEdicion.PrecioDeCompra = decimal.TryParse(PrecioCompraEntry.Text, out var precioCompra) ? precioCompra : 0m;
+                    _productoEnEdicion.PrecioDeCompra = decimal.TryParse(PrecioCompraEntry.Text, out var precioCompra)
+                        ? precioCompra : 0m;
                     _productoEnEdicion.PrecioDeVenta = decimal.TryParse(PrecioVentaEntry.Text, out var precioVenta) ? precioVenta : 0m;
                     _productoEnEdicion.Stock = int.TryParse(StockEntry.Text, out var stock) ? stock : 0;
                     _productoEnEdicion.Proveedor = ProveedorEntry.Text;
@@ -352,6 +387,27 @@ namespace ProyectoEmpresa.Views
             if (sender is Button button)
             {
                 button.BackgroundColor = Color.FromArgb("#352A5F");
+            }
+        }
+        private void OnPointerExitedGeneral1(object sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.BackgroundColor = Color.FromArgb("#1C2855");
+            }
+        }
+        private void OnPointerExitedGeneral2(object sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.BackgroundColor = Color.FromArgb("#2B3D6D");
+            }
+        }
+        private void OnPointerExitedGeneral3(object sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.BackgroundColor = Color.FromArgb("#3A5285");
             }
         }
     }

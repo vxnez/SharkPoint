@@ -17,11 +17,15 @@
             <Grid ColumnDefinitions="*,*">
 
                 <Grid Grid.Column="0" HorizontalOptions="Start">
-                    <Image 
+                    <Button
                         Grid.Column="1"
-                        Source="text.png" 
-                        Aspect="Center"
-                        VerticalOptions="Center" Margin="20"/>
+                        ImageSource="text.png" 
+                        HorizontalOptions="Start"
+                        Clicked="OnIrAMainPageClicked"
+                        BackgroundColor="Transparent"
+                        VerticalOptions="Center" Margin="20">
+
+                    </Button>
                 </Grid>
 
 
@@ -62,7 +66,7 @@
 
             <!-- Barra horizontal ventanas -->
             <Grid ColumnDefinitions="*,*,*" HorizontalOptions="Center">
-                
+
                 <Button
                     BorderWidth="5"
                     TextTransform="Uppercase"
@@ -70,22 +74,24 @@
                     Grid.Row="1"
                     Grid.Column="0"
                     Text="Inventario Disponible"
+                    BackgroundColor="#1C2855"
                     Clicked="OnIrAVentana1Clicked">
                     <Button.GestureRecognizers>
-                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral1" />
                     </Button.GestureRecognizers>
                 </Button>
-                
-                <Button 
+
+                <Button
                     BorderWidth="5"
                     TextTransform="Uppercase"
                     Margin="10"
                     Grid.Row="1"
                     Grid.Column="1"
-                    Text="Registro de Venta" 
+                    Text="Registro de Venta"
+                    BackgroundColor="#2B3D6D"
                     Clicked="OnIrAVentana2Clicked">
                     <Button.GestureRecognizers>
-                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral2" />
                     </Button.GestureRecognizers>
                 </Button>
 

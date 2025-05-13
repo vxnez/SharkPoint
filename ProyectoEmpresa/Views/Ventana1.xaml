@@ -17,11 +17,15 @@
             <Grid ColumnDefinitions="*,*">
                 
                 <Grid Grid.Column="0" HorizontalOptions="Start">
-                        <Image 
+                    <Button
                         Grid.Column="1"
-                        Source="text.png" 
-                        Aspect="Center"
-                        VerticalOptions="Center" Margin="20"/>
+                        ImageSource="text.png" 
+                        HorizontalOptions="Start"
+                        Clicked="OnIrAMainPageClicked"
+                        BackgroundColor="Transparent"
+                        VerticalOptions="Center" Margin="20">
+
+                    </Button>
                 </Grid>
 
 
@@ -80,9 +84,10 @@
                     Grid.Row="1"
                     Grid.Column="1"
                     Text="Registro de Venta"
+                    BackgroundColor="#2B3D6D"
                     Clicked="OnIrAVentana2Clicked">
                     <Button.GestureRecognizers>
-                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral2" />
                     </Button.GestureRecognizers>
                 </Button>
                 <Button
@@ -92,9 +97,11 @@
                     Grid.Row="1"
                     Grid.Column="2"
                     Text="Historial Diario"
-                    Clicked="OnIrAVentana3Clicked">
+                    Clicked="OnIrAVentana3Clicked"
+                    BackgroundColor="#3A5285">
+                    
                     <Button.GestureRecognizers>
-                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral3" />
                     </Button.GestureRecognizers>
                 </Button>
 
@@ -130,7 +137,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Grid ColumnDefinitions="*,*,*,*,*,*,*,*" RowDefinitions="*,*,*,*,*,*,*,*,*" Margin="10">
+            <Grid ColumnDefinitions="*,*,*,*,*,*,*,*" RowDefinitions="*,*,*,*,*,*,*,*,*,*" Margin="10">
                 <Entry x:Name="NombreEntry" Placeholder="Nombre del producto" Grid.Row="7" Grid.Column="1"/>
                 <Entry x:Name="DescripcionEntry" Placeholder="Descripción" Grid.Row="7" Grid.Column="2"/>
                 <Entry x:Name="CategoriaEntry" Placeholder="Categoría" Grid.Row="7" Grid.Column="3"/>
@@ -139,45 +146,34 @@
                 <Entry x:Name="StockEntry" Placeholder="Stock" Keyboard="Numeric" Grid.Row="7" Grid.Column="6"/>
                 <Entry x:Name="ProveedorEntry" Placeholder="Proveedor" Grid.Row="7" Grid.Column="7" />
 
-                <Button BorderWidth="30" 
-                        HeightRequest="100" 
-                        WidthRequest="200" 
-                        Text="Mostrar" Clicked="OnMostrarProductosClicked"
-                        Grid.Row="8"
-                        Grid.Column="6"
-                        BackgroundColor="#352A5F">
-                    <Button.GestureRecognizers>
-                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
-                    </Button.GestureRecognizers>
-                </Button>
-
-                <Button BorderWidth="30" 
-                        HeightRequest="100" 
-                        WidthRequest="200" 
-                        Text="Guardar" Clicked="OnGuardarProductoClicked" 
-                        Grid.Row="8" 
-                        Grid.Column="7">
-                    <Button.GestureRecognizers>
-                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGuardar" PointerExited="OnPointerExitedGuardar" />
-                    </Button.GestureRecognizers>
-                </Button>
-
-                <Button BorderWidth="30" 
-                        HeightRequest="100" 
+                <Button BorderWidth="30"
+                        HeightRequest="100"
                         WidthRequest="220"
-                        Text="Eliminar Todo" 
+                        Text="Eliminar Todo"
                         Clicked="OnEliminarProductoClicked"
-                        Grid.Row="8" 
+                        Grid.Row="8"
                         Grid.Column="0">
                     <Button.GestureRecognizers>
                         <PointerGestureRecognizer PointerEntered="OnPointerEnteredEliminar" PointerExited="OnPointerExitedEliminar" />
                     </Button.GestureRecognizers>
                 </Button>
 
+                <Button BorderWidth="30"
+                        HeightRequest="100"
+                        WidthRequest="220"
+                        Text="Eliminar Uno "
+                        Clicked="OnEliminarUnicoProductoClicked"
+                        Grid.Row="8"
+                        Grid.Column="1">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredEliminarUnico" PointerExited="OnPointerExitedEliminarUnico" />
+                    </Button.GestureRecognizers>
+                </Button>
+
                 <Button x:Name="EditarGuardarButton"
                         BorderWidth="30"
-                        HeightRequest="NaN"
-                        WidthRequest="NaN"
+                        HeightRequest="100"
+                        WidthRequest="200"
                         Text="Editar"
                         Clicked="OnEditarGuardarClicked"
                         Grid.Row="8"
@@ -187,15 +183,26 @@
                     </Button.GestureRecognizers>
                 </Button>
 
-                <Button BorderWidth="30" 
-                        HeightRequest="100" 
-                        WidthRequest="220"
-                        Text="Eliminar Uno " 
-                        Clicked="OnEliminarUnicoProductoClicked"
-                        Grid.Row="8" 
-                        Grid.Column="4">
+                <Button BorderWidth="30"
+                        HeightRequest="100"
+                        WidthRequest="200"
+                        Text="Mostrar" Clicked="OnMostrarProductosClicked"
+                        Grid.Row="8"
+                        Grid.Column="6"
+                        BackgroundColor="#352A5F">
                     <Button.GestureRecognizers>
-                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredEliminarUnico" PointerExited="OnPointerExitedEliminarUnico" />
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                    </Button.GestureRecognizers>
+                </Button>
+
+                <Button BorderWidth="30"
+                        HeightRequest="100"
+                        WidthRequest="200"
+                        Text="Guardar" Clicked="OnGuardarProductoClicked"
+                        Grid.Row="8"
+                        Grid.Column="7">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGuardar" PointerExited="OnPointerExitedGuardar" />
                     </Button.GestureRecognizers>
                 </Button>
             </Grid>
