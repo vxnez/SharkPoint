@@ -1,12 +1,13 @@
 ﻿using System;
 using SQLite;
 
-namespace ProyectoEmpresa.Views
+namespace ProyectoEmpresa.Models
 {
     public class Productos
     {
-        [PrimaryKey]
-        public string Id { get; set; } = new Random().Next(1000, 10000).ToString();
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
+
         [Unique]
         public string Nombre { get; set; } = string.Empty;
 
@@ -22,5 +23,6 @@ namespace ProyectoEmpresa.Views
 
         public string Proveedor { get; set; } = string.Empty;
         public decimal Subtotal { get; set; }
+        public string IdFormateado => Id.ToString("D4");
     }
 }

@@ -106,7 +106,31 @@
                 </Button>
 
             </Grid>
+            
+            <HorizontalStackLayout Margin="10" Spacing="20" HorizontalOptions="Start">
+                <Button
+                    Text="IMPORTAR"
+                    Clicked="OnImportarExcelClicked"
+                    TextColor="White"
+                    WidthRequest="200"
+                    HeightRequest="50">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                    </Button.GestureRecognizers>
+                </Button>
 
+                <Button
+                    Text="EXPORTAR"
+                    Clicked="OnExportarExcelClicked"
+                    TextColor="White"
+                    WidthRequest="200"
+                    HeightRequest="50">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                    </Button.GestureRecognizers>
+                </Button>
+            </HorizontalStackLayout>
+            
             <ListView x:Name="Productos" ItemsSource="{Binding Productos}" IsVisible="False" Margin="10">
                 <ListView.Header>
                     <Grid ColumnDefinitions="*,*,*,*,*,*,*,*">
@@ -124,14 +148,14 @@
                     <DataTemplate>
                         <ViewCell>
                             <Grid ColumnDefinitions="*,*,*,*,*,*,*,*">
-                                <Label Grid.Column="0" Text="{Binding Id}" HorizontalOptions="Center" VerticalOptions="Center" />
-                                <Label Grid.Column="1" Text="{Binding Nombre}" HorizontalOptions="Center" VerticalOptions="Center" />
-                                <Label Grid.Column="2" Text="{Binding Descripcion}" HorizontalOptions="Center" VerticalOptions="Center" />
+                                <Label Grid.Column="0" Text="{Binding IdFormateado}" HorizontalOptions="Center" VerticalOptions="Center" />
+                                <Label Grid.Column="1" Text="{Binding Nombre}" HorizontalOptions="Start" VerticalOptions="Center" />
+                                <Label Grid.Column="2" Text="{Binding Descripcion}" HorizontalOptions="Start" VerticalOptions="Center" />
                                 <Label Grid.Column="3" Text="{Binding Categoria}" HorizontalOptions="Center" VerticalOptions="Center" />
                                 <Label Grid.Column="4" Text="{Binding PrecioDeCompra}" HorizontalOptions="Center" VerticalOptions="Center" />
                                 <Label Grid.Column="5" Text="{Binding PrecioDeVenta}" HorizontalOptions="Center" VerticalOptions="Center" />
                                 <Label Grid.Column="6" Text="{Binding Stock}" HorizontalOptions="Center" VerticalOptions="Center" />
-                                <Label Grid.Column="7" Text="{Binding Proveedor}" HorizontalOptions="Center" VerticalOptions="Center" />
+                                <Label Grid.Column="7" Text="{Binding Proveedor}" HorizontalOptions="Start" VerticalOptions="Center" />
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

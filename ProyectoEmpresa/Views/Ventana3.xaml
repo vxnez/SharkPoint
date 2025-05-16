@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              x:Class="ProyectoEmpresa.Views.Ventana3">
     
     <ContentPage.Background>
@@ -107,6 +108,29 @@
                     BackgroundColor="#261946">
                 </Button>
             </Grid>
+            <Label Text="Selecciona una fecha:" FontAttributes="Bold" HorizontalOptions="Center"/>
+                <DatePicker x:Name="datePicker" MaximumDate="{x:Static sys:DateTime.Now}" DateSelected="OnDateSelected" HorizontalOptions="Center"/>
+                <Label Text="HISTORIAL DIARIO" FontAttributes="Bold" Margin="0,10,0,0" HorizontalOptions="Center"/>
+                    <CollectionView x:Name="ventasCollectionView" Margin="0,0,0,10">
+                        <!-- Encabezados de columnas -->
+                        <CollectionView.Header>
+                            <Grid ColumnDefinitions="2*,*,*" Padding="0,0,0,5">
+                        <Label Text="Nombre del producto" Grid.Column="0" FontAttributes="Bold" HorizontalTextAlignment="Start" TextTransform="Uppercase"/>
+                        <Label Text="Cantidad" Grid.Column="1" FontAttributes="Bold" HorizontalTextAlignment="Center" TextTransform="Uppercase"/>
+                        <Label Text="Precio" Grid.Column="2" FontAttributes="Bold" HorizontalTextAlignment="Center" TextTransform="Uppercase"/>
+                            </Grid>
+                        </CollectionView.Header>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="2*,*,*">
+                                    <Label Text="{Binding Producto}" Grid.Column="0" HorizontalTextAlignment="Start"/>
+                                    <Label Text="{Binding Cantidad}" Grid.Column="1" HorizontalTextAlignment="Center"/>
+                                    <Label Text="{Binding PrecioUnitario, StringFormat='${0:F2}'}" Grid.Column="2" HorizontalTextAlignment="End" Margin="0,0,170,0"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+            <Label x:Name="totalLabel" FontAttributes="Bold" Margin="0,100,170,0" HorizontalOptions="End"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

@@ -1,11 +1,8 @@
 using SQLite;
-using System.Text.RegularExpressions;
-using Microsoft.Maui.Storage; // Para el selector de archivos
 using NPOI.SS.UserModel;      // Clases principales de NPOI
 using NPOI.XSSF.UserModel;     // Para archivos .xlsx
-using System.IO;
-using System.Linq; // Para usar Any() en la lista
-using System.Collections.Generic; // Asegúrate de tener esta using para Dictionary y IEnumerable
+using ProyectoEmpresa.Models; // Asegúrate de tener esta using para Dictionary y IEnumerable
+using System.Collections.ObjectModel;
 
 namespace ProyectoEmpresa.Views
 {
@@ -28,7 +25,7 @@ namespace ProyectoEmpresa.Views
             Productos.ItemSelected += OnProductoSeleccionado;
         }
 
-        private void OnProductoSeleccionado(object sender, SelectedItemChangedEventArgs e)
+        private void OnProductoSeleccionado(object? sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem != null)
             {
@@ -44,17 +41,7 @@ namespace ProyectoEmpresa.Views
         {
             return _dbConnection.Table<Productos>().ToList();
         }
-
-        private string GetCellValueAsString(ICell cell)
-        {
-            if (cell != null)
-            {
-                return cell.ToString().Trim();
-            }
-            return string.Empty;
-        }
-
-        private decimal GetCellValueAsDecimal(ICell cell)
+        private decimal GetCellValueAsDecimal(ICell? cell)
         {
             if (cell != null && cell.CellType == CellType.Numeric)
             {
@@ -64,7 +51,7 @@ namespace ProyectoEmpresa.Views
             return result;
         }
 
-        private int GetCellValueAsInt(ICell cell)
+        private int GetCellValueAsInt(ICell? cell)
         {
             if (cell != null && cell.CellType == CellType.Numeric)
             {
@@ -72,6 +59,15 @@ namespace ProyectoEmpresa.Views
             }
             int.TryParse(GetCellValueAsString(cell), out int result);
             return result;
+        }
+
+        private string GetCellValueAsString(ICell? cell)
+        {
+            if (cell != null && cell.StringCellValue != null)
+            {
+                return cell.StringCellValue.Trim();
+            }
+            return string.Empty;
         }
 
         // Botón para volver a la página principal
@@ -119,12 +115,12 @@ namespace ProyectoEmpresa.Views
                 return;
             }
 
-                var productoExistente = _dbConnection.Table<Productos>().FirstOrDefault(p => p.Nombre == NombreEntry.Text);
-                if (productoExistente != null && !_enModoEdicion)
-                    {
-                        DisplayAlert("Error", "Ya existe un producto con este nombre. Por favor, elige un nombre diferente.", "OK");
-                        return;
-                    }
+            var productoExistente = _dbConnection.Table<Productos>().FirstOrDefault(p => p.Nombre == NombreEntry.Text);
+            if (productoExistente != null && !_enModoEdicion)
+            {
+                DisplayAlert("Error", "Ya existe un producto con este nombre. Por favor, elige un nombre diferente.", "OK");
+                return;
+            }
 
             var nuevoProducto = new Productos
             {
@@ -349,6 +345,7 @@ namespace ProyectoEmpresa.Views
         }
 
         private void OnPointerExitedEliminar(object sender, EventArgs e)
+
         {
             if (sender is Button button)
             {
@@ -410,5 +407,163 @@ namespace ProyectoEmpresa.Views
                 button.BackgroundColor = Color.FromArgb("#3A5285");
             }
         }
+
+        private async void OnExportarExcelClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var productos = ObtenerTodosLosDatos();
+
+                if (productos == null || productos.Count == 0)
+                {
+                    await DisplayAlert("Exportar", "No hay productos para exportar.", "OK");
+                    return;
+                }
+
+                IWorkbook workbook = new XSSFWorkbook();
+                ISheet sheet = workbook.CreateSheet("Inventario");
+
+                // Encabezados
+                var headerRow = sheet.CreateRow(0);
+                headerRow.CreateCell(0).SetCellValue("ID");
+                headerRow.CreateCell(1).SetCellValue("Nombre");
+                headerRow.CreateCell(2).SetCellValue("Descripción");
+                headerRow.CreateCell(3).SetCellValue("Categoría");
+                headerRow.CreateCell(4).SetCellValue("PrecioCompra");
+                headerRow.CreateCell(5).SetCellValue("PrecioVenta");
+                headerRow.CreateCell(6).SetCellValue("Stock");
+                headerRow.CreateCell(7).SetCellValue("Proveedor");
+
+                // Datos
+                var nuevosProductos = new List<Productos>(); // Declare nuevosProductos here
+                for (int i = 1; i <= sheet.LastRowNum; i++)
+                {
+                    var row = sheet.GetRow(i);
+                    if (row == null) continue;
+
+                    // Asegura que los datos sean del tipo correcto
+                    string id = row.GetCell(0)?.ToString() ?? string.Empty;
+                    string nombre = row.GetCell(1)?.ToString() ?? string.Empty;
+                    string descripcion = row.GetCell(2)?.ToString() ?? string.Empty;
+                    string categoria = row.GetCell(3)?.ToString() ?? string.Empty;
+
+                    decimal precioCompra = 0m;
+                    if (row.GetCell(4) != null && row.GetCell(4).CellType == CellType.Numeric)
+                        precioCompra = (decimal)row.GetCell(4).NumericCellValue;
+                    else
+                        decimal.TryParse(row.GetCell(4)?.ToString(), out precioCompra);
+
+                    decimal precioVenta = 0m;
+                    if (row.GetCell(5) != null && row.GetCell(5).CellType == CellType.Numeric)
+                        precioVenta = (decimal)row.GetCell(5).NumericCellValue;
+                    else
+                        decimal.TryParse(row.GetCell(5)?.ToString(), out precioVenta);
+
+                    int stock = 0;
+                    if (row.GetCell(6) != null && row.GetCell(6).CellType == CellType.Numeric)
+                        stock = (int)row.GetCell(6).NumericCellValue;
+                    else
+                        int.TryParse(row.GetCell(6)?.ToString(), out stock);
+
+                    string proveedor = row.GetCell(7)?.ToString() ?? string.Empty;
+
+                    var producto = new Productos
+                    {
+                        Id = int.TryParse(id, out var parsedId) ? parsedId : 0,
+                        Nombre = nombre,
+                        Descripcion = descripcion,
+                        Categoria = categoria,
+                        PrecioDeCompra = precioCompra,
+                        PrecioDeVenta = precioVenta,
+                        Stock = stock,
+                        Proveedor = proveedor
+                    };
+                    nuevosProductos.Add(producto);
+                }
+
+                string fileName = $"Inventario_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+                string filePath = Path.Combine(FileSystem.Current.AppDataDirectory, fileName);
+
+                using (var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                {
+                    workbook.Write(fs);
+                }
+
+                await DisplayAlert("Exportar", $"Archivo exportado en:\n{filePath}", "OK");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.Message, "OK");
+            }
+        }
+
+        // Función para importar productos desde un archivo Excel
+        private async void OnImportarExcelClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var result = await FilePicker.PickAsync(new PickOptions
+                {
+                    PickerTitle = "Selecciona un archivo Excel",
+                    FileTypes = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
+            {
+                { DevicePlatform.WinUI, new[] { ".xlsx" } },
+                { DevicePlatform.Android, new[] { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" } },
+                { DevicePlatform.iOS, new[] { "com.microsoft.excel.xlsx" } }
+            })
+                });
+
+                if (result == null)
+                    return;
+
+                using (var stream = await result.OpenReadAsync())
+                {
+                    IWorkbook workbook = new XSSFWorkbook(stream);
+                    ISheet sheet = workbook.GetSheetAt(0);
+
+                    var nuevosProductos = new List<Productos>();
+
+                    for (int i = 1; i <= sheet.LastRowNum; i++)
+                    {
+                        var row = sheet.GetRow(i);
+                        if (row == null) continue;
+
+                        var producto = new Productos
+                        {
+                            Nombre = row.GetCell(1)?.ToString() ?? string.Empty,
+                            Descripcion = row.GetCell(2)?.ToString() ?? string.Empty,
+                            Categoria = row.GetCell(3)?.ToString() ?? string.Empty,
+                            PrecioDeCompra = row.GetCell(4) != null && row.GetCell(4).CellType == CellType.Numeric ? (decimal)row.GetCell(4).NumericCellValue : 0m,
+                            PrecioDeVenta = row.GetCell(5) != null && row.GetCell(5).CellType == CellType.Numeric ? (decimal)row.GetCell(5).NumericCellValue : 0m,
+                            Stock = row.GetCell(6) != null && row.GetCell(6).CellType == CellType.Numeric ? (int)row.GetCell(6).NumericCellValue : 0,
+                            Proveedor = row.GetCell(7)?.ToString() ?? string.Empty
+                        };
+                        nuevosProductos.Add(producto);
+                    }
+
+                    // Guardar en la base de datos
+                    foreach (var producto in nuevosProductos)
+                    {
+                        // Evita duplicados por nombre
+                        var existe = _dbConnection.Table<Productos>().FirstOrDefault(p => p.Nombre == producto.Nombre);
+                        if (existe == null)
+                            _dbConnection.Insert(producto);
+                        else
+                            _dbConnection.Update(producto);
+                    }
+
+                    // Actualizar la lista en pantalla
+                    var productos = _dbConnection.Table<Productos>().ToList();
+                    Productos.ItemsSource = productos;
+                }
+
+                await DisplayAlert("Importar", "Importación completada y guardada en la base de datos.", "OK");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Ocurrió un error durante la importación: {ex.Message}", "OK");
+            }
+        }
     }
+
 }

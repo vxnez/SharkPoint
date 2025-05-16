@@ -1,4 +1,5 @@
 using Microsoft.Maui.Graphics;
+using ProyectoEmpresa.Models;
 using SQLite;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -33,9 +34,6 @@ public partial class Ventana2 : ContentPage
         await Navigation.PopAsync(animated: false);
     }
 
-
-
-
     // Botón para ventana1
     private async void OnIrAVentana1Clicked(object sender, EventArgs e)
     {
@@ -54,8 +52,6 @@ public partial class Ventana2 : ContentPage
         await Navigation.PushAsync(new Ventana3(), animated: false);
     }
 
-
-
     //colores para el boton Guardar
     private void OnPointerEnteredGuardar(object sender, EventArgs e)
     {
@@ -73,10 +69,7 @@ public partial class Ventana2 : ContentPage
         }
     }
 
-
-
     //colores para el boton General
-
     private void OnPointerEnteredGeneral(object sender, EventArgs e)
     {
         if (sender is Button button)
@@ -93,10 +86,6 @@ public partial class Ventana2 : ContentPage
         }
     }
 
-
-
-
-
     // Registro de cambios en el campo de texto del ID del producto
     private void OnProductIdTextChanged(object sender, TextChangedEventArgs e)
     {
@@ -108,7 +97,14 @@ public partial class Ventana2 : ContentPage
             return;
         }
 
-        var productId = ProductIdEntry.Text;
+        if (!int.TryParse(ProductIdEntry.Text, out int productId))
+        {
+            ProductNameLabel.Text = "ID inválido";
+            ProductStockLabel.Text = "-";
+            ProductPriceLabel.Text = "-";
+            return;
+        }
+
         var product = _dbConnection.Table<Productos>().FirstOrDefault(p => p.Id == productId);
 
         if (product != null)
@@ -135,8 +131,12 @@ public partial class Ventana2 : ContentPage
             return;
         }
 
-        // Obtener datos del producto y cantidad deseada
-        var productId = ProductIdEntry.Text;
+        if (!int.TryParse(ProductIdEntry.Text, out int productId))
+        {
+            await DisplayAlert("Error", "ID de producto inválido.", "OK");
+            return;
+        }
+
         if (!int.TryParse(QuantityEntry.Text, out int quantity) || quantity <= 0)
         {
             await DisplayAlert("Error", "Por favor, ingrese una cantidad válida.", "OK");
@@ -212,8 +212,23 @@ public partial class Ventana2 : ContentPage
             _dbConnection.BeginTransaction();
             try
             {
+                // REGISTRO DE VENTAS EN LA BASE DE DATOS DE VENTAS
+                var dbPathVentas = Path.Combine(FileSystem.AppDataDirectory, "ventas.db3");
+                var ventasDatabase = new VentasDatabase(dbPathVentas);
+
                 foreach (var item in ShoppingList)
                 {
+                    // Guardar la venta en la base de datos de ventas
+                    var venta = new Venta
+                    {
+                        Producto = item.Nombre,
+                        Cantidad = item.Stock,
+                        PrecioUnitario = (double)item.PrecioDeVenta,
+                        Fecha = DateTime.Today
+                    };
+                    await ventasDatabase.SaveVentaAsync(venta);
+
+                    // Actualizar stock en la base de datos de productos
                     var productoEnDb = _dbConnection.Table<Productos>().FirstOrDefault(p => p.Id == item.Id);
                     if (productoEnDb != null && productoEnDb.Stock >= item.Stock)
                     {

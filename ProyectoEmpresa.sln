@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35913.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharkPoint", "ProyectoEmpresa\SharkPoint.csproj", "{15B3CB27-DA75-4C09-89D9-988FF4DBD9B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProyectoEmpresa", "ProyectoEmpresa\ProyectoEmpresa.csproj", "{15B3CB27-DA75-4C09-89D9-988FF4DBD9B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

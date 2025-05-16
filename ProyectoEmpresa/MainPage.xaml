@@ -13,14 +13,15 @@
 
     <ScrollView>
         <VerticalStackLayout Margin="200">
-            <Image 
-                    Source="full.png" 
-                    Grid.Column="1" 
-                    Grid.Row="0" 
-                    Aspect="Center"
-                    Scale="1"
-                    />
-            
+            <Button
+                ImageSource="full.png"
+                Grid.Column="1" 
+                Grid.Row="0" 
+                HorizontalOptions="Center"
+                Scale="1"
+                BackgroundColor="Transparent"
+                InputTransparent="True"/>
+
             <!-- Barra horizontal ventanas -->
             <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*" HorizontalOptions="Center" Margin="10">
 
