@@ -108,12 +108,13 @@
                     BackgroundColor="#261946">
                 </Button>
             </Grid>
+            <!-- Calendario -->
             <Label Text="Selecciona una fecha:" FontAttributes="Bold" HorizontalOptions="Center"/>
                 <DatePicker x:Name="datePicker" MaximumDate="{x:Static sys:DateTime.Now}" DateSelected="OnDateSelected" HorizontalOptions="Center"/>
                 <Label Text="HISTORIAL DIARIO" FontAttributes="Bold" Margin="0,10,0,0" HorizontalOptions="Center"/>
-                    <CollectionView x:Name="ventasCollectionView" Margin="0,0,0,10">
-                        <!-- Encabezados de columnas -->
-                        <CollectionView.Header>
+            <!-- lista de productos diario -->
+            <CollectionView x:Name="ventasCollectionView" Margin="0,0,0,10">
+                <CollectionView.Header>
                             <Grid ColumnDefinitions="2*,*,*" Padding="0,0,0,5">
                         <Label Text="Nombre del producto" Grid.Column="0" FontAttributes="Bold" HorizontalTextAlignment="Start" TextTransform="Uppercase"/>
                         <Label Text="Cantidad" Grid.Column="1" FontAttributes="Bold" HorizontalTextAlignment="Center" TextTransform="Uppercase"/>

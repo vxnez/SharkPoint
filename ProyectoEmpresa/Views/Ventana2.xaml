@@ -61,7 +61,7 @@
 
                 </Grid>
             </Grid>
-
+    
             <!-- Barra horizontal ventanas -->
             <Grid ColumnDefinitions="*,*,*" HorizontalOptions="Center">
                 <Button
@@ -122,7 +122,7 @@
 
 
             </Grid>
-
+            <!-- Encabezado de la lista -->
             <Grid ColumnDefinitions="*,*,*,*">
                 <Label Text="CANTIDAD" Grid.Column="0" HorizontalOptions="Center" Margin="10"/>
                 <Label Text="NOMBRE" Grid.Column="1" HorizontalOptions="Fill" Margin="10"/>
@@ -142,20 +142,18 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-
-
-
-
             <!-- Subtotal y Total -->
             <Grid ColumnDefinitions="*,*,*,*" RowDefinitions="*,*">
                 <Label Text="Total:" FontAttributes="Bold" Grid.Column="2" Margin="50" VerticalOptions="Center" Grid.Row="0" HorizontalOptions="End"/>
                 <Label x:Name="TotalLabel" Text="0.00" FontAttributes="Bold" Grid.Column="3" Margin="50" VerticalOptions="Center" HorizontalOptions="Center"/>
             </Grid>
-
+            
             <!-- BOTONES -->
             <Grid ColumnDefinitions="*,*,*,*,*,*,*,*">
+
+                <!-- agregar -->
                 <Button 
-                    Text="Agregar" 
+                    ImageSource="more.png"
                     Clicked="OnAddToShoppingListClicked" 
                     Grid.Column="6" 
                     Grid.Row="1" 
@@ -168,8 +166,9 @@
                         <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
                     </Button.GestureRecognizers>
                 </Button>
+                <!-- comprar -->
                 <Button 
-                    Text="Comprar" 
+                    ImageSource="buy.png" 
                     Clicked="OnComprarButtonClicked" 
                     Grid.Column="7" 
                     Grid.Row="1" 

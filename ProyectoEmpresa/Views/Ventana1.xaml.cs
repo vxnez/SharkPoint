@@ -1,7 +1,8 @@
+using Microsoft.Maui.Platform;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using ProyectoEmpresa.Models;
 using SQLite;
-using NPOI.SS.UserModel;      // Clases principales de NPOI
-using NPOI.XSSF.UserModel;     // Para archivos .xlsx
-using ProyectoEmpresa.Models; // Asegúrate de tener esta using para Dictionary y IEnumerable
 using System.Collections.ObjectModel;
 
 namespace ProyectoEmpresa.Views
@@ -41,65 +42,39 @@ namespace ProyectoEmpresa.Views
         {
             return _dbConnection.Table<Productos>().ToList();
         }
-        private decimal GetCellValueAsDecimal(ICell? cell)
-        {
-            if (cell != null && cell.CellType == CellType.Numeric)
-            {
-                return (decimal)cell.NumericCellValue;
-            }
-            decimal.TryParse(GetCellValueAsString(cell), out decimal result);
-            return result;
-        }
 
-        private int GetCellValueAsInt(ICell? cell)
-        {
-            if (cell != null && cell.CellType == CellType.Numeric)
-            {
-                return (int)cell.NumericCellValue;
-            }
-            int.TryParse(GetCellValueAsString(cell), out int result);
-            return result;
-        }
 
-        private string GetCellValueAsString(ICell? cell)
-        {
-            if (cell != null && cell.StringCellValue != null)
-            {
-                return cell.StringCellValue.Trim();
-            }
-            return string.Empty;
-        }
 
+        //====== BOTONES GENERALES ======
         // Botón para volver a la página principal
         private void OnIrAMainPageClicked(object sender, EventArgs e)
         {
             Navigation.PushAsync(new MainPage(), animated: false);
         }
-
         // Botón para volver a la página anterior
         private async void OnBackButtonClicked(object sender, EventArgs e)
         {
             await Navigation.PopAsync(animated: false);
         }
-
         // Botón para ventana1
         private async void OnIrAVentana1Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new Ventana1(), animated: false);
         }
-
         // Botón para ventana2
         private async void OnIrAVentana2Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new Ventana2(), animated: false);
         }
-
         // Botón para ventana3
         private async void OnIrAVentana3Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new Ventana3(), animated: false);
         }
 
+
+
+        //====== BOTONES PARA PRODUCTOS ======
         // Botón Guardar Producto
         private void OnGuardarProductoClicked(object sender, EventArgs e)
         {
@@ -166,26 +141,26 @@ namespace ProyectoEmpresa.Views
             StockEntry.Text = string.Empty;
             ProveedorEntry.Text = string.Empty;
         }
-
         // Mostrar productos guardados
         private void OnMostrarProductosClicked(object sender, EventArgs e)
         {
-            if (_productosVisibles)
+            if (sender is Button boton)
             {
-                Productos.IsVisible = false;
-                ((Button)sender).Text = "Mostrar";
+                if (_productosVisibles)
+                {
+                    Productos.IsVisible = false;
+                    boton.ImageSource = "view.png";
+                }
+                else
+                {
+                    var productos = ObtenerTodosLosDatos();
+                    Productos.ItemsSource = productos;
+                    Productos.IsVisible = true;
+                    boton.ImageSource = "view_no.png";
+                }
+                _productosVisibles = !_productosVisibles;
             }
-            else
-            {
-                var productos = ObtenerTodosLosDatos();
-                Productos.ItemsSource = productos;
-                Productos.IsVisible = true;
-                ((Button)sender).Text = "Ocultar";
-            }
-
-            _productosVisibles = !_productosVisibles;
         }
-
         // Eliminar todos los productos
         private async void OnEliminarProductoClicked(object sender, EventArgs e)
         {
@@ -212,7 +187,6 @@ namespace ProyectoEmpresa.Views
                 await DisplayAlert("Error", $"Ocurrió un error al eliminar la base de datos: {ex.Message}", "OK");
             }
         }
-
         // Botón para eliminar un único producto
         private async void OnEliminarUnicoProductoClicked(object sender, EventArgs e)
         {
@@ -244,7 +218,6 @@ namespace ProyectoEmpresa.Views
                 }
             }
         }
-
         // Botón para editar productos
         private async void OnEditarGuardarClicked(object sender, EventArgs e)
         {
@@ -268,9 +241,8 @@ namespace ProyectoEmpresa.Views
 
                 _productoEnEdicion = productoSeleccionado;
                 _enModoEdicion = true;
-                EditarGuardarButton.Text = "Actualizar";
 
-                await DisplayAlert("Modo Edición", "Edita los campos y presiona 'Actualizar' para actualizar el producto.", "OK");
+                await DisplayAlert("Modo Edición", "Edita los campos y presiona nuevamente el boton 'Editar' para actualizar el producto.", "OK");
             }
             else
             {
@@ -307,7 +279,6 @@ namespace ProyectoEmpresa.Views
 
                     _productoEnEdicion = null;
                     _enModoEdicion = false;
-                    EditarGuardarButton.Text = "Editar";
 
                     await DisplayAlert("Producto Editado", "El producto ha sido actualizado correctamente.", "OK");
                 }
@@ -318,6 +289,8 @@ namespace ProyectoEmpresa.Views
             }
         }
 
+
+        //====== COLORES ======
         // Colores para el botón de ELIMINAR (ÚNICO)
         private void OnPointerEnteredEliminarUnico(object sender, EventArgs e)
         {
@@ -326,7 +299,6 @@ namespace ProyectoEmpresa.Views
                 button.BackgroundColor = Colors.DarkRed;
             }
         }
-
         private void OnPointerExitedEliminarUnico(object sender, EventArgs e)
         {
             if (sender is Button button)
@@ -334,7 +306,6 @@ namespace ProyectoEmpresa.Views
                 button.BackgroundColor = Color.FromArgb("#352A5F");
             }
         }
-
         // Colores para el botón de ELIMINAR (TODOS)
         private void OnPointerEnteredEliminar(object sender, EventArgs e)
         {
@@ -343,7 +314,6 @@ namespace ProyectoEmpresa.Views
                 button.BackgroundColor = Colors.DarkRed;
             }
         }
-
         private void OnPointerExitedEliminar(object sender, EventArgs e)
 
         {
@@ -352,7 +322,6 @@ namespace ProyectoEmpresa.Views
                 button.BackgroundColor = Color.FromArgb("#352A5F");
             }
         }
-
         // Colores para el botón de GUARDAR
         private void OnPointerEnteredGuardar(object sender, EventArgs e)
         {
@@ -361,7 +330,6 @@ namespace ProyectoEmpresa.Views
                 button.BackgroundColor = Color.FromArgb("#264130");
             }
         }
-
         private void OnPointerExitedGuardar(object sender, EventArgs e)
         {
             if (sender is Button button)
@@ -369,7 +337,6 @@ namespace ProyectoEmpresa.Views
                 button.BackgroundColor = Color.FromArgb("#352A5F");
             }
         }
-
         // Colores para los botones GENERALES
         private void OnPointerEnteredGeneral(object sender, EventArgs e)
         {
@@ -378,7 +345,6 @@ namespace ProyectoEmpresa.Views
                 button.BackgroundColor = Color.FromArgb("#261946");
             }
         }
-
         private void OnPointerExitedGeneral(object sender, EventArgs e)
         {
             if (sender is Button button)
@@ -408,6 +374,9 @@ namespace ProyectoEmpresa.Views
             }
         }
 
+
+        //====== BOTONES EXPORTAR E IMPORTAR ======
+        //Funciones para exportar/importar Excel
         private async void OnExportarExcelClicked(object sender, EventArgs e)
         {
             try
@@ -496,8 +465,6 @@ namespace ProyectoEmpresa.Views
                 await DisplayAlert("Error", ex.Message, "OK");
             }
         }
-
-        // Función para importar productos desde un archivo Excel
         private async void OnImportarExcelClicked(object sender, EventArgs e)
         {
             try
@@ -563,6 +530,21 @@ namespace ProyectoEmpresa.Views
             {
                 await DisplayAlert("Error", $"Ocurrió un error durante la importación: {ex.Message}", "OK");
             }
+        }
+
+
+
+        //====== SCROLLVIEW ======
+        // Botones para desplazar el ScrollView
+        private async void OnIrArribaClicked(object sender, EventArgs e)
+        {
+            // Desplaza el ScrollView al inicio (arriba)
+            await MainScrollView.ScrollToAsync(0, 0, true);
+        }
+        private async void OnIrAbajoClicked(object sender, EventArgs e)
+        {
+            // Desplaza el ScrollView al final (abajo)
+            await MainScrollView.ScrollToAsync(0, MainScrollView.ContentSize.Height, true);
         }
     }
 
