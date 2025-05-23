@@ -26,7 +26,7 @@ Este proyecto es una aplicación de punto de venta desarrollada en .NET MAUI com
 ## Instalación
 
 1. Clona este repositorio:
-   git clone https://github.com/tu-usuario/tu-repo.git
+   git clone https://github.com/tu-usuario/tu-repo.git](https://github.com/vxnez/SharkPoint.git
 2. Abre la solución en Visual Studio.
 3. Restaura los paquetes NuGet.
 4. Compila y ejecuta el proyecto en el emulador o dispositivo de tu preferencia.
