@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             x:Class="ProyectoEmpresa.Views.Ventana3">
+    
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#608EB4" Offset="4" />
+            <GradientStop Color="#17183B" Offset="0.5" />
+            <GradientStop Color="#1B3864" Offset="5.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+    <ScrollView>
+
+        <VerticalStackLayout>
+            <!-- Barra horizontal opciones rápidas  -->
+            <Grid ColumnDefinitions="*,*">
+
+                <Grid Grid.Column="0" HorizontalOptions="Start">
+                    <Button
+                        Grid.Column="1"
+                        ImageSource="text.png" 
+                        HorizontalOptions="Start"
+                        Clicked="OnIrAMainPageClicked"
+                        BackgroundColor="Transparent"
+                        VerticalOptions="Center" Margin="20">
+
+                    </Button>
+                </Grid>
+
+
+                <Grid HorizontalOptions="End" Grid.Column="1" ColumnDefinitions="*,*,*" VerticalOptions="End" >
+
+                    <Button
+                        HorizontalOptions="End"
+                        Grid.Column="0"
+                        HeightRequest="50"
+                        WidthRequest="60"
+                        ImageSource="volver.png"
+                        Clicked="OnBackButtonClicked">
+
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                        </Button.GestureRecognizers>
+
+                    </Button>
+
+                    <Button 
+                        Margin="10"
+                        Grid.Column="1"
+                        ImageSource="home.png" 
+                        HorizontalOptions="End"
+                        CornerRadius="15"
+                        HeightRequest="50"
+                        WidthRequest="60"
+                        Clicked="OnIrAMainPageClicked">
+
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                        </Button.GestureRecognizers>
+
+                    </Button>
+
+                </Grid>
+            </Grid>
+
+            <!-- Barra horizontal ventanas -->
+            <Grid ColumnDefinitions="*,*,*" HorizontalOptions="Center">
+
+                <Button
+                    BorderWidth="5"
+                    TextTransform="Uppercase"
+                    Margin="10"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="Inventario Disponible"
+                    BackgroundColor="#1C2855"
+                    Clicked="OnIrAVentana1Clicked">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral1" />
+                    </Button.GestureRecognizers>
+                </Button>
+
+                <Button
+                    BorderWidth="5"
+                    TextTransform="Uppercase"
+                    Margin="10"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Text="Registro de Venta"
+                    BackgroundColor="#2B3D6D"
+                    Clicked="OnIrAVentana2Clicked">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral2" />
+                    </Button.GestureRecognizers>
+                </Button>
+
+                <!-- Boton 3 -->
+                <Button
+                    BorderWidth="20" 
+                    TextTransform="Uppercase"
+                    Margin="10"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Text="Historial Diario" 
+                    Clicked="OnIrAVentana3Clicked"
+                    BackgroundColor="#261946">
+                </Button>
+            </Grid>
+            <!-- Calendario -->
+            <Label Text="Selecciona una fecha:" FontAttributes="Bold" HorizontalOptions="Center"/>
+                <DatePicker x:Name="datePicker" MaximumDate="{x:Static sys:DateTime.Now}" DateSelected="OnDateSelected" HorizontalOptions="Center"/>
+                <Label Text="HISTORIAL DIARIO" FontAttributes="Bold" Margin="0,10,0,0" HorizontalOptions="Center"/>
+            <!-- lista de productos diario -->
+            <CollectionView x:Name="ventasCollectionView" Margin="0,0,0,10">
+                <CollectionView.Header>
+                            <Grid ColumnDefinitions="2*,*,*" Padding="0,0,0,5">
+                        <Label Text="Nombre del producto" Grid.Column="0" FontAttributes="Bold" HorizontalTextAlignment="Start" TextTransform="Uppercase"/>
+                        <Label Text="Cantidad" Grid.Column="1" FontAttributes="Bold" HorizontalTextAlignment="Center" TextTransform="Uppercase"/>
+                        <Label Text="Precio" Grid.Column="2" FontAttributes="Bold" HorizontalTextAlignment="Center" TextTransform="Uppercase"/>
+                            </Grid>
+                        </CollectionView.Header>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="2*,*,*">
+                                    <Label Text="{Binding Producto}" Grid.Column="0" HorizontalTextAlignment="Start"/>
+                                    <Label Text="{Binding Cantidad}" Grid.Column="1" HorizontalTextAlignment="Center"/>
+                                    <Label Text="{Binding PrecioUnitario, StringFormat='${0:F2}'}" Grid.Column="2" HorizontalTextAlignment="End" Margin="0,0,170,0"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+            <Label x:Name="totalLabel" FontAttributes="Bold" Margin="0,100,170,0" HorizontalOptions="End"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

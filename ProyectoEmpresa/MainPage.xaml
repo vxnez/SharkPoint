@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProyectoEmpresa.MainPage">
+    
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#608EB4" Offset="4" />
+            <GradientStop Color="#17183B" Offset="0.5" />
+            <GradientStop Color="#1B3864" Offset="5.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ScrollView>
+        <VerticalStackLayout Margin="200">
+            <Button
+                ImageSource="full.png"
+                Grid.Column="1" 
+                Grid.Row="0" 
+                HorizontalOptions="Center"
+                Scale="1"
+                BackgroundColor="Transparent"
+                InputTransparent="True"/>
+
+            <!-- Barra horizontal ventanas -->
+            <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*" HorizontalOptions="Center" Margin="10">
+
+                <Button
+                    Margin="10"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    WidthRequest="250"
+                    HeightRequest="NaN" 
+                    BackgroundColor="#1C2855"
+                    Text="Inventario&#x0a;Disponible"
+                    Clicked="OnIrAVentana1Clicked">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral1" />
+                    </Button.GestureRecognizers>
+                </Button>
+
+                <Button
+                    Margin="10"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    WidthRequest="250"
+                    HeightRequest="NaN"
+                    BackgroundColor="#2B3D6D"
+                    Text="Registro de Venta"
+                    Clicked="OnIrAVentana2Clicked">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral2" />
+                    </Button.GestureRecognizers>
+                </Button>
+                <Button
+                    Margin="10"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    WidthRequest="250"
+                    HeightRequest="150"
+                    BackgroundColor="#3A5285"
+                    Text="Historial Diario"
+                    Clicked="OnIrAVentana3Clicked">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral3" />
+                    </Button.GestureRecognizers>
+                </Button>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

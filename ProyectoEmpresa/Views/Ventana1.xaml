@@ -1,0 +1,259 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProyectoEmpresa.Views.Ventana1">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#608EB4" Offset="4" />
+            <GradientStop Color="#17183B" Offset="0.5" />
+            <GradientStop Color="#1B3864" Offset="5.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+    <Grid>
+        <!-- Barra horizontal opciones rápidas FIJA -->
+        <Grid ColumnDefinitions="*,*" VerticalOptions="Start" BackgroundColor="Transparent" Padding="0,10,0,0" ZIndex="1">
+            <Grid Grid.Column="0" HorizontalOptions="Start">
+                <Button
+                    Grid.Column="1"
+                    ImageSource="text.png" 
+                    HorizontalOptions="Start"
+                    Clicked="OnIrAMainPageClicked"
+                    BackgroundColor="Transparent"
+                    VerticalOptions="Center" Margin="20">
+                </Button>
+            </Grid>
+            <Grid HorizontalOptions="End" Grid.Column="1" ColumnDefinitions="*,*,*,*" VerticalOptions="End" >
+                <Button 
+                    Margin="0"
+                    Grid.Column="0"
+                    ImageSource="up.png" 
+                    HorizontalOptions="End"
+                    CornerRadius="25"
+                    HeightRequest="50"
+                    WidthRequest="60"
+                    Clicked="OnIrArribaClicked">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                    </Button.GestureRecognizers>
+                </Button>
+                <Button 
+                    Margin="20"
+                    Grid.Column="1"
+                    ImageSource="down.png" 
+                    HorizontalOptions="End"
+                    CornerRadius="25"
+                    HeightRequest="50"
+                    WidthRequest="60"
+                    Clicked="OnIrAbajoClicked">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                    </Button.GestureRecognizers>
+                </Button>
+                <Button
+                    HorizontalOptions="End"
+                    Grid.Column="2"
+                    HeightRequest="50"
+                    WidthRequest="60"
+                    ImageSource="volver.png"
+                    Clicked="OnBackButtonClicked">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                    </Button.GestureRecognizers>
+                </Button>
+                <Button 
+                    Margin="10"
+                    Grid.Column="3"
+                    ImageSource="home.png" 
+                    HorizontalOptions="End"
+                    CornerRadius="15"
+                    HeightRequest="50"
+                    WidthRequest="60"
+                    Clicked="OnIrAMainPageClicked">
+                    <Button.GestureRecognizers>
+                        <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                    </Button.GestureRecognizers>
+                </Button>
+            </Grid>
+        </Grid>
+        <!-- Contenido desplazable -->
+        <ScrollView x:Name="MainScrollView" Margin="0,80,0,0">
+            <VerticalStackLayout>
+
+                <!-- Barra horizontal ventanas -->
+                <Grid ColumnDefinitions="*,*,*" HorizontalOptions="Center">
+                    <Button
+                    BorderWidth="20"
+                    TextTransform="Uppercase"
+                    Margin="10"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="Inventario Disponible"
+                    BackgroundColor="#261946"
+                    Clicked="OnIrAVentana1Clicked">
+                    </Button>
+
+                    <Button
+                    BorderWidth="5"
+                    TextTransform="Uppercase"
+                    Margin="10"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Text="Registro de Venta"
+                    BackgroundColor="#2B3D6D"
+                    Clicked="OnIrAVentana2Clicked">
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral2" />
+                        </Button.GestureRecognizers>
+                    </Button>
+                    <Button
+                    BorderWidth="5" 
+                    TextTransform="Uppercase"
+                    Margin="10"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Text="Historial Diario"
+                    Clicked="OnIrAVentana3Clicked"
+                    BackgroundColor="#3A5285">
+
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral3" />
+                        </Button.GestureRecognizers>
+                    </Button>
+
+                </Grid>
+
+                <!-- Botones IMPORTAR, EXPORTAR E IR ABAJO -->
+                <HorizontalStackLayout Margin="10" Spacing="20" HorizontalOptions="Start">
+                    <Button
+                    Text="IMPORTAR"
+                    Clicked="OnImportarExcelClicked"
+                    TextColor="White"
+                    WidthRequest="200"
+                    HeightRequest="50">
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                        </Button.GestureRecognizers>
+                    </Button>
+
+                    <Button
+                    Text="EXPORTAR"
+                    Clicked="OnExportarExcelClicked"
+                    TextColor="White"
+                    WidthRequest="200"
+                    HeightRequest="50">
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                        </Button.GestureRecognizers>
+                    </Button>
+                </HorizontalStackLayout>
+
+                <!-- LISTA DE PRODUCTOS (BASE DE DATOS) -->
+                <ListView x:Name="Productos" ItemsSource="{Binding Productos}" IsVisible="False" Margin="10">
+                    <ListView.Header>
+                        <Grid ColumnDefinitions="*,*,*,*,*,*,*,*">
+                            <Label Grid.Column="0" Text="ID" FontAttributes="Bold" TextTransform="Uppercase" HorizontalOptions="Center" />
+                            <Label Grid.Column="1" Text="Nombre" FontAttributes="Bold" TextTransform="Uppercase" HorizontalOptions="Center" />
+                            <Label Grid.Column="2" Text="Descripción" FontAttributes="Bold" TextTransform="Uppercase" HorizontalOptions="Center" />
+                            <Label Grid.Column="3" Text="Categoría" FontAttributes="Bold" TextTransform="Uppercase" HorizontalOptions="Center" />
+                            <Label Grid.Column="4" Text="Precio Compra" FontAttributes="Bold" TextTransform="Uppercase" HorizontalOptions="Center" />
+                            <Label Grid.Column="5" Text="Precio Venta" FontAttributes="Bold" TextTransform="Uppercase" HorizontalOptions="Center" />
+                            <Label Grid.Column="6" Text="Stock" FontAttributes="Bold" TextTransform="Uppercase" HorizontalOptions="Center" />
+                            <Label Grid.Column="7" Text="Proveedor" FontAttributes="Bold" TextTransform="Uppercase" HorizontalOptions="Center" />
+                        </Grid>
+                    </ListView.Header>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid ColumnDefinitions="*,*,*,*,*,*,*,*">
+                                    <Label Grid.Column="0" Text="{Binding IdFormateado}" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    <Label Grid.Column="1" Text="{Binding Nombre}" HorizontalOptions="Start" VerticalOptions="Center" />
+                                    <Label Grid.Column="2" Text="{Binding Descripcion}" HorizontalOptions="Start" VerticalOptions="Center" />
+                                    <Label Grid.Column="3" Text="{Binding Categoria}" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    <Label Grid.Column="4" Text="{Binding PrecioDeCompra}" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    <Label Grid.Column="5" Text="{Binding PrecioDeVenta}" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    <Label Grid.Column="6" Text="{Binding Stock}" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    <Label Grid.Column="7" Text="{Binding Proveedor}" HorizontalOptions="Start" VerticalOptions="Center" />
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <!-- REGISTRO DE NUEVO PRODUCTO -->
+                <Grid ColumnDefinitions="*,*,*,*,*,*,*,*" RowDefinitions="*,*,*,*,*,*,*,*,*,*" Margin="10">
+                    <Entry x:Name="NombreEntry" Placeholder="Nombre del producto" Grid.Row="7" Grid.Column="1"/>
+                    <Entry x:Name="DescripcionEntry" Placeholder="Descripción" Grid.Row="7" Grid.Column="2"/>
+                    <Entry x:Name="CategoriaEntry" Placeholder="Categoría" Grid.Row="7" Grid.Column="3"/>
+                    <Entry x:Name="PrecioCompraEntry" Placeholder="Precio de compra" Keyboard="Numeric" Grid.Row="7" Grid.Column="4"/>
+                    <Entry x:Name="PrecioVentaEntry" Placeholder="Precio de venta" Keyboard="Numeric" Grid.Row="7" Grid.Column="5" />
+                    <Entry x:Name="StockEntry" Placeholder="Stock" Keyboard="Numeric" Grid.Row="7" Grid.Column="6"/>
+                    <Entry x:Name="ProveedorEntry" Placeholder="Proveedor" Grid.Row="7" Grid.Column="7" />
+
+                    <!-- Boton todo -->
+                    <Button BorderWidth="30"
+                            HeightRequest="100"
+                            WidthRequest="220"
+                            ImageSource="eliminar.png"
+                            Clicked="OnEliminarProductoClicked"
+                            Grid.Row="8"
+                            Grid.Column="0">
+                            <Button.GestureRecognizers>
+                                <PointerGestureRecognizer PointerEntered="OnPointerEnteredEliminar" PointerExited="OnPointerExitedEliminar" />
+                            </Button.GestureRecognizers>
+                    </Button>
+                    <!-- Boton eliminar uno -->
+                    <Button BorderWidth="30"
+                        HeightRequest="100"
+                        WidthRequest="220"
+                        ImageSource="borrar_uno.png"
+                        Clicked="OnEliminarUnicoProductoClicked"
+                        Grid.Row="8"
+                        Grid.Column="1">
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer PointerEntered="OnPointerEnteredEliminarUnico" PointerExited="OnPointerExitedEliminarUnico" />
+                        </Button.GestureRecognizers>
+                    </Button>
+                    <!-- Boton editar -->
+                    <Button x:Name="EditarGuardarButton"
+                            BorderWidth="30"
+                            HeightRequest="100"
+                            WidthRequest="200"
+                            TextColor="Gray"
+                            ImageSource="edit.png"
+                            Clicked="OnEditarGuardarClicked"
+                            Grid.Row="8"
+                            Grid.Column="5">
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                        </Button.GestureRecognizers>
+                    </Button>
+                    <!-- Boton mostrar/ocultar -->
+                    <Button BorderWidth="30"
+                            TextColor="Gray"
+                            HeightRequest="100"
+                            WidthRequest="200"
+                            ImageSource="view.png"
+                            Clicked="OnMostrarProductosClicked"
+                            Grid.Row="8"
+                            Grid.Column="6"
+                            BackgroundColor="#352A5F">
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral" />
+                        </Button.GestureRecognizers>
+                    </Button>
+                    <!-- Boton Guardar -->
+                    <Button BorderWidth="30"
+                        HeightRequest="100"
+                        WidthRequest="200"
+                        ImageSource="save.png"
+                        Clicked="OnGuardarProductoClicked"
+                        Grid.Row="8"
+                        Grid.Column="7">
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer PointerEntered="OnPointerEnteredGuardar" PointerExited="OnPointerExitedGuardar" />
+                        </Button.GestureRecognizers>
+                    </Button>
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>
