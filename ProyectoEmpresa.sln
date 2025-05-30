@@ -15,6 +15,7 @@ Global
 		{15B3CB27-DA75-4C09-89D9-988FF4DBD9B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15B3CB27-DA75-4C09-89D9-988FF4DBD9B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15B3CB27-DA75-4C09-89D9-988FF4DBD9B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15B3CB27-DA75-4C09-89D9-988FF4DBD9B8}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
