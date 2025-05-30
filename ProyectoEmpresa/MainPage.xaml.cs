@@ -5,10 +5,15 @@
         public MainPage()
         {
             InitializeComponent();
+            this.Loaded += MainPage_Loaded;
         }
-        private void OnIrThemeClicked(object sender, EventArgs e)
+        private async void MainPage_Loaded(object sender, EventArgs e)
         {
-
+            await Task.WhenAll(
+                InventarioButton.FadeTo(1, 800, Easing.CubicIn),
+                RegistroButton.FadeTo(1, 1000, Easing.CubicIn),
+                HistorialButton.FadeTo(1, 1200, Easing.CubicIn)
+            );
         }
         //Boton para ventana1
         private async void OnIrAVentana1Clicked(object sender, EventArgs e)

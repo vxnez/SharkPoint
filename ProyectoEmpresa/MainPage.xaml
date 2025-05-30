@@ -26,13 +26,16 @@
             <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*" HorizontalOptions="Center" Margin="10">
 
                 <Button
+                    x:Name="InventarioButton"
                     Margin="10"
                     Grid.Row="1"
                     Grid.Column="0"
-                    WidthRequest="250"
-                    HeightRequest="NaN" 
                     BackgroundColor="#1C2855"
-                    Text="Inventario&#x0a;Disponible"
+                    VerticalOptions="Fill"
+                    HeightRequest="150"
+                    WidthRequest="250"
+                    FontAutoScalingEnabled="True"
+                    Text="Inventario Disponible"
                     Clicked="OnIrAVentana1Clicked">
                     <Button.GestureRecognizers>
                         <PointerGestureRecognizer PointerEntered="OnPointerEnteredGeneral" PointerExited="OnPointerExitedGeneral1" />
@@ -40,12 +43,14 @@
                 </Button>
 
                 <Button
+                    x:Name="RegistroButton"
                     Margin="10"
                     Grid.Row="1"
                     Grid.Column="1"
-                    WidthRequest="250"
-                    HeightRequest="NaN"
                     BackgroundColor="#2B3D6D"
+                    VerticalOptions="Fill"
+                    HeightRequest="150"
+                    WidthRequest="250"
                     Text="Registro de Venta"
                     Clicked="OnIrAVentana2Clicked">
                     <Button.GestureRecognizers>
@@ -53,11 +58,13 @@
                     </Button.GestureRecognizers>
                 </Button>
                 <Button
+                    x:Name="HistorialButton"
                     Margin="10"
                     Grid.Row="1"
                     Grid.Column="2"
-                    WidthRequest="250"
+                    VerticalOptions="Fill"
                     HeightRequest="150"
+                    WidthRequest="250"
                     BackgroundColor="#3A5285"
                     Text="Historial Diario"
                     Clicked="OnIrAVentana3Clicked">
